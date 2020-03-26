@@ -1,6 +1,9 @@
 # Generated instance
 *.dat
 
+# PyLint file
+.pylintrc
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
