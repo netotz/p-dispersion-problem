@@ -35,7 +35,7 @@ class Point:
         '''
         return self.__y
 
-    def distance(self, point: Point) -> float:
+    def distance(self, point: 'Point') -> float:
         '''
         Calculates the Euclidean distance to another Point.
         '''
