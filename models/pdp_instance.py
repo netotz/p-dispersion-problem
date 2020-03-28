@@ -6,7 +6,7 @@ from typing import List
 
 from .point import Point
 
-Matrix = List[List[int, ...], ...]
+Matrix = List[List[int]]
 
 class PDPInstance:
     '''
