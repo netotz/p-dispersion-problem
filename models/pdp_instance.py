@@ -25,7 +25,7 @@ class PDPInstance:
         self.__n = n
         self.__p = p
         self.__points = points
-        self.__distances = self.get_distances()
+        self.__distances = self.__get_distances()
 
     @property
     def n(self) -> int:
@@ -55,7 +55,7 @@ class PDPInstance:
         '''
         return self.__distances
 
-    def get_distances(self) -> Matrix:
+    def __get_distances(self) -> Matrix:
         '''
         Gets the distances matrix of the candidate points.
         '''
