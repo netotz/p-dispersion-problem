@@ -4,7 +4,7 @@ Module for the class of a PDP's Instance.
 
 from typing import List
 
-from point import Point
+from .point import Point
 
 Matrix = List[List[int, ...], ...]
 
