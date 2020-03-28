@@ -17,8 +17,6 @@ class PDPInstance:
     p: number of points to select from n.
 
     points: list of Point objects.
-
-    distances: matrix of points' Euclidean distances.
     '''
 
     def __init__(self, n: int, p: int, points: List[Point]):
