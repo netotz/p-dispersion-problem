@@ -74,3 +74,9 @@ class PDPInstance:
             # for each row
             for i in range(len(self.points))
         ]
+
+    def __str__(self) -> str:
+        '''
+        Returns a string representing the body (the Points) of the instance's file.
+        '''
+        return '\n'.join([str(p) for p in self.points])
