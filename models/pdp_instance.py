@@ -75,6 +75,12 @@ class PDPInstance:
             for i in range(len(self.points))
         ]
 
+    def set_distances(self):
+        '''
+        Set the distances matrix.
+        '''
+        self.__distances = self.__get_distances()
+
     def __str__(self) -> str:
         '''
         Returns a string representing the body (the Points) of the instance's file.
