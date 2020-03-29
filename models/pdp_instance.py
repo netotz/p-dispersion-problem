@@ -17,18 +17,13 @@ class PDPInstance:
     p: number of points to select from n.
 
     points: list of Point objects.
-
-    distances_flag: whether or not to calculate the distances matrix. Set this to True when reading an instance file.
     '''
 
-    def __init__(self, n: int, p: int, points: List[Point], distances_flag: bool):
+    def __init__(self, n: int, p: int, points: List[Point]):
         self.__n = n
         self.__p = p
         self.__points = points
-        if distances_flag:
-            self.__distances = self.__get_distances()
-        else:
-            self.__distances = [[0]]
+        self.__distances = self.__get_distances()
 
     @property
     def n(self) -> int:
