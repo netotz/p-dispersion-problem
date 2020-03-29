@@ -42,3 +42,11 @@ class Point:
         dx = abs(self.x - point.x)
         dy = abs(self.y - point.y)
         return math.hypot(dx, dy)
+
+    def __str__(self) -> str:
+        '''
+        Returns the string representation of a Point:
+
+        <index> <x> <y>
+        '''
+        return str(self.index) + ' ' + str(self.x) + ' ' + str(self.y)
