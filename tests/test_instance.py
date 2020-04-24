@@ -14,7 +14,7 @@ def test_matrix():
         Point(1, 1, 2),
         Point(2, 1, 3)
     ]
-    instance = PDPInstance(3, 1, points)
+    instance = PDPInstance(1, points)
     matrix = [
         [0, 1, 2],
         [1, 0, 1],
