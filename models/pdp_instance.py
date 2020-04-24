@@ -3,6 +3,7 @@ Module for the class of a PDP's Instance.
 '''
 
 from typing import List
+from random import randint
 
 from .point import Point
 
@@ -12,18 +13,30 @@ class PDPInstance:
     '''
     Instance for the PDP containing:
 
-    n: number of total candidate points.
-
     p: number of points to select from n.
 
-    points: list of Point objects.
+    points: list of n Point objects.
+
+    distances_flag: whether or not to calculate the distances matrix.
+    Set this to False when writing the instance.
     '''
 
-    def __init__(self, n: int, p: int, points: List[Point]):
-        self.__n = n
+    def __init__(self, p: int, points: List[Point], distances_flag: bool = True):
+        self.__n = len(points)
         self.__p = p
         self.__points = points
-        self.__distances = self.__get_distances()
+        if distances_flag:
+            self.__distances = self.__get_distances()
+        else:
+            self.__distances = [[0]]
+
+    @classmethod
+    def random(cls, n: int, p: int, x_max: int, y_max: int):
+        '''
+        Constructs a random PDP Instance.
+        '''
+        points = [Point(i, randint(0, x_max), randint(0, y_max)) for i in range(n)]
+        return cls(p, points, False)
 
     @property
     def n(self) -> int:
@@ -69,3 +82,15 @@ class PDPInstance:
             # for each row
             for i in range(len(self.points))
         ]
+
+    def set_distances(self):
+        '''
+        Set the distances matrix.
+        '''
+        self.__distances = self.__get_distances()
+
+    def __str__(self) -> str:
+        '''
+        Returns a string representing the body (the Points) of the instance's file.
+        '''
+        return '\n'.join([str(p) for p in self.points])

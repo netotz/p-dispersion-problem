@@ -2,23 +2,17 @@
 Module to generate an instance for the PDP.
 '''
 
-from typing import Tuple
+from models import PDPInstance
+from file_handling import write_instance
+from .cl_argsparse import parse_arguments
 
-from cl_argsparse import parse_arguments
-
-def generate_instance(n: int, p: int, dimensions: Tuple[int, int]):
+def generate_instance():
     '''
-    Generates an random instance based on the parameters:
-
-    n: total number of candidate points. They will be randomly located on a bidimensional plane.
-
-    p: number of points to select from n.
-
-    dimensions: maximum values that the coordinates (x, y) of the n points can have.
+    Generates an random instance based on the arguments parsed.
 
     The generated instance is saved to a .dat file.
     '''
-
-if __name__ == '__main__':
     n, p, dimensions = parse_arguments()
-    # generate_instance(n, p, dimensions)
+    x_max, y_max = dimensions
+    instance = PDPInstance.random(n, p, x_max, y_max)
+    write_instance(instance)

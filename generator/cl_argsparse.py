@@ -39,8 +39,8 @@ def parse_arguments() -> Tuple[int, int, Tuple[int, int]]:
     )
     required.add_argument(
         'p',
-        type=int,
-        help='number of points to select'
+        type=float,
+        help='percentage of points to select'
     )
 
     # required exclusive arguments
@@ -86,5 +86,7 @@ def parse_arguments() -> Tuple[int, int, Tuple[int, int]]:
     else:
         dimensions = tuple(arguments.rectangle)
 
+    p = int(arguments.p * arguments.n)
+
     # return parsed arguments gathered in a tuple
-    return (arguments.n, arguments.p, dimensions)
+    return (arguments.n, p, dimensions)
