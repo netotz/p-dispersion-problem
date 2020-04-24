@@ -10,12 +10,12 @@ import sys
 import argparse
 from typing import Tuple
 
-def parse_arguments() -> Tuple[int, int, Tuple[int, int]]:
+def parse_arguments() -> Tuple[int, int, Tuple[int, int], int]:
     '''
     An ArgumentParser object receives arguments from the command line
-    and returns them in a tuple of 3 elements.
+    and returns them in a tuple of 4 elements.
 
-    (n: int, p: int, dimensions: Tuple[int, int])
+    (n: int, p: int, dimensions: Tuple[int, int], instances: int)
 
     If no arguments are given the program will end.
     '''
@@ -62,6 +62,13 @@ def parse_arguments() -> Tuple[int, int, Tuple[int, int]]:
 
     # optional arguments
     optional.add_argument(
+        '-i', '--instances',
+        metavar='n',
+        type=int,
+        default=1,
+        help='number of instances to generate, default to 1'
+    )
+    optional.add_argument(
         '-v', '--verbose',
         type=int,
         default=0,
@@ -89,4 +96,4 @@ def parse_arguments() -> Tuple[int, int, Tuple[int, int]]:
     p = int(arguments.p * arguments.n)
 
     # return parsed arguments gathered in a tuple
-    return (arguments.n, p, dimensions)
+    return (arguments.n, p, dimensions, arguments.instances)

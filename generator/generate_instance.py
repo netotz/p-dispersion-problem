@@ -12,7 +12,8 @@ def generate_instance():
 
     The generated instance is saved to a .dat file.
     '''
-    n, p, dimensions = parse_arguments()
+    n, p, dimensions, number = parse_arguments()
     x_max, y_max = dimensions
-    instance = PDPInstance.random(n, p, x_max, y_max)
-    write_instance(instance)
+    for _ in range(number):    
+        instance = PDPInstance.random(n, p, x_max, y_max)
+        write_instance(instance)
