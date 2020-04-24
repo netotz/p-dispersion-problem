@@ -35,7 +35,14 @@ class PDPInstance:
         '''
         Constructs a random PDP Instance.
         '''
-        points = [Point(i, randint(0, x_max), randint(0, y_max)) for i in range(n)]
+        # prevent coordinates to repeat
+        coords = set()
+        while len(coords) < n:
+            coords |= set((randint(0, x_max), randint(0, y_max)) for _ in range(n - len(coords)))
+
+        # generate points from unique coordinates
+        points = [Point(i, x, y) for i, (x, y) in enumerate(coords)]
+
         return cls(p, points, False)
 
     @property

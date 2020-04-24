@@ -14,6 +14,6 @@ def generate_instance():
     '''
     n, p, dimensions, number = parse_arguments()
     x_max, y_max = dimensions
-    for _ in range(number):    
+    for _ in range(number):
         instance = PDPInstance.random(n, p, x_max, y_max)
         write_instance(instance)
