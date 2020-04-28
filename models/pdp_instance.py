@@ -80,7 +80,7 @@ class PDPInstance:
         return [
             [
                 # Euclidean distance from point i to point j
-                self.points[i].distance(self.points[j])
+                int(self.points[i].distance(self.points[j]))
                 # if it's distance of same city put 0
                 if i != j else 0
                 # for each column
