@@ -6,13 +6,6 @@ from typing import Tuple
 
 from file_handling import list_files, read_instance
 
-SIZES = {
-    0 : '',   # all files
-    1: '100', # small
-    2: '500', # medium
-    3: '1000' # large
-}
-
 def solve_instance(size: int, number: int, heuristics: Tuple[int, int], verbose: int):
     '''
     Solves one or more PDP instances according to:

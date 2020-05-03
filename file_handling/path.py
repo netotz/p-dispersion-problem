@@ -6,8 +6,6 @@ import os
 import random
 from typing import List
 
-from solver import SIZES
-
 def generate_filename(n: int, p: int, index: int = 0) -> str:
     '''
     Generates a name for an instance's file:
@@ -37,8 +35,14 @@ def list_files(size: int, number: int) -> List[str]:
         os.makedirs(subdirectory)
         return list_files(size, number)
     else:
+        sizes = {
+            0 : '',   # all files
+            1: '100', # small
+            2: '500', # medium
+            3: '1000' # large
+        }
         filtered_files = [
             file for file in files
-            if file.startswith(SIZES[size]) and file.endswith('.dat')
+            if file.startswith(sizes[size]) and file.endswith('.dat')
         ]
         return random.sample(filtered_files, number)

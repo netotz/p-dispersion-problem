@@ -68,13 +68,6 @@ def parse_arguments() -> Tuple[int, int, Tuple[int, int], int]:
         default=1,
         help='number of instances to generate, default to 1'
     )
-    optional.add_argument(
-        '-v', '--verbose',
-        type=int,
-        default=0,
-        choices=(1, 2),
-        help='increase output verbosity'
-    )
     # append optional arguments to parser to display at the end
     parser._action_groups.append(optional)
 
