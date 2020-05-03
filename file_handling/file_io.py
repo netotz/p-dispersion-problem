@@ -4,7 +4,7 @@ Module for writing and reading instances to and from files.
 
 import os
 
-from models import PDPInstance
+from models import PDPInstance, Point
 from .path import generate_filename, get_filepath
 
 def write_instance(instance: PDPInstance):
@@ -29,3 +29,29 @@ def write_instance(instance: PDPInstance):
             file.write(str(instance))
     except (IOError, OSError) as error:
         print('The instance could not be written:\n', error)
+
+def read_instance(filename: str) -> PDPInstance:
+    '''
+    Reads a file that contains a PDP instance and returns its object.
+    '''
+    filepath = get_filepath(filename)
+    try:
+        # if file is empty
+        if os.stat(filepath).st_size == 0:
+            print('   File %s is empty.' % filename)
+            return None
+
+        with open(filepath, 'r') as file:
+            # read every line of the file and parse it to constructor's arguments of Point class
+            points = [Point(*map(int, line.split())) for line in file]
+
+        # get p from filename
+        p = int(filename.split('_')[1])
+        # return an object of PDPInstance
+        return PDPInstance(p, points)
+    except FileNotFoundError as error:
+        print('  ', error)
+        return None
+    except ValueError:
+        print('   File %s has invalid format.' % filename)
+        return None
