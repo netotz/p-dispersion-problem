@@ -50,3 +50,6 @@ class Point:
         <index> <x> <y>
         '''
         return str(self.index) + ' ' + str(self.x) + ' ' + str(self.y)
+
+    def __eq__(self, point: 'Point') -> bool:
+        return self.index == point.index and self.x == point.x and self.y == point.y
