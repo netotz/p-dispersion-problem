@@ -35,11 +35,9 @@ def parse_arguments() -> Tuple[int, int, Tuple[int, int], int]:
     required = parser.add_argument_group('requiered arguments')
     required.add_argument(
         'size',
-        metavar='size',
+        metavar='n',
         type=int,
-        default=1,
-        choices=(1, 2, 3),
-        help='size of the instance: 1 = small, 2 = medium, 3 = large'
+        help='size of the instance, the n points'
     )
     required.add_argument(
         '-H', '--heuristics',
