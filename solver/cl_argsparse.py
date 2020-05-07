@@ -35,11 +35,9 @@ def parse_arguments() -> Tuple[int, int, Tuple[int, int], int]:
     required = parser.add_argument_group('requiered arguments')
     required.add_argument(
         'size',
-        metavar='size',
+        metavar='n',
         type=int,
-        default=1,
-        choices=(1, 2, 3),
-        help='size of the instance: 1 = small, 2 = medium, 3 = large'
+        help='size of the instance, the n points'
     )
     required.add_argument(
         '-H', '--heuristics',
@@ -59,13 +57,12 @@ def parse_arguments() -> Tuple[int, int, Tuple[int, int], int]:
 
     # required exclusive arguments
     # only one argument needs to be specified
-    number = required.add_mutually_exclusive_group(required=True)
+    number = required.add_mutually_exclusive_group()
     number.add_argument(
         '-i', '--instances',
         metavar='n',
         type=int,
-        default=1,
-        help='number of instances to solve, default to 1'
+        help='number of instances to solve, default to 1 if not specified'
     )
     number.add_argument(
         '-a', '--all',
@@ -95,8 +92,9 @@ def parse_arguments() -> Tuple[int, int, Tuple[int, int], int]:
     # if all instances will be solved
     if arguments.all:
         instances = 20
-    # if chosen shape is rectangular
-    else:
+    elif arguments.instances:
         instances = arguments.instances
+    else:
+        instances = 1
 
     return (arguments.size, instances, tuple(arguments.heuristics), arguments.verbose)

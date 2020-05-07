@@ -2,7 +2,7 @@
 Module for the class of a PDP's Instance.
 '''
 
-from typing import List
+from typing import List, Tuple
 from random import randint
 
 from .point import Point
@@ -95,6 +95,16 @@ class PDPInstance:
         Set the distances matrix.
         '''
         self.__distances = self.__get_distances()
+
+    def get_farthest_points(self) -> Tuple[Point, Point]:
+        '''
+        Returns the two points that are the farthest according to the distances matrix.
+        '''
+        maximums = (max(enumerate(row), key=lambda r: r[1]) for row in self.distances)
+        farthest = max(enumerate(maximums), key=lambda m: m[1][1])
+        i, j = farthest[0], farthest[1][0]
+
+        return (self.points[i], self.points[j])
 
     def __str__(self) -> str:
         '''

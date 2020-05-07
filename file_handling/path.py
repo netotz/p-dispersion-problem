@@ -35,14 +35,18 @@ def list_files(size: int, number: int) -> List[str]:
         os.makedirs(subdirectory)
         return list_files(size, number)
     else:
-        sizes = {
-            0 : '',   # all files
-            1: '100', # small
-            2: '500', # medium
-            3: '1000' # large
-        }
+        prefix = str(size) + '_'
+        suffix = '.dat'
+
         filtered_files = [
             file for file in files
-            if file.startswith(sizes[size]) and file.endswith('.dat')
+            if file.startswith(prefix) and file.endswith(suffix)
         ]
-        return random.sample(filtered_files, number)
+
+        if not filtered_files:
+            print(f' Error: There are no instances of size {size}.')
+            return []
+        elif len(filtered_files) == number:
+            return filtered_files
+        else:
+            return random.sample(filtered_files, number)
