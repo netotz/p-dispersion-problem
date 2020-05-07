@@ -8,6 +8,7 @@ from random import randint
 from .point import Point
 
 Matrix = List[List[int]]
+Solution = List[Point]
 
 class PDPInstance:
     '''

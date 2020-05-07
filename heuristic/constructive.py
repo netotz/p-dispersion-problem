@@ -2,11 +2,9 @@
 Module of the implementations of constructive heuristics for the PDP.
 '''
 
-from typing import List
+from models import PDPInstance, Point, Solution
 
-from models import PDPInstance, Point
-
-def greedy_construction(instance: PDPInstance) -> List[Point]:
+def greedy_construction(instance: PDPInstance) -> Solution:
     '''
     Starting by choosing the 2 farthest points,
     the algorithm adds the farthest point to the current solution until p is reached.
