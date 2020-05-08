@@ -54,5 +54,8 @@ class Point:
     def __eq__(self, point: 'Point') -> bool:
         return self.index == point.index and self.x == point.x and self.y == point.y
 
+    def __hash__(self):
+        return hash((self.index, self.x, self.y))
+
     def __repr__(self) -> str:
         return f'Point({self.index}, {self.x}, {self.y})'
