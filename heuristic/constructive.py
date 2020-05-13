@@ -2,7 +2,7 @@
 Module of the implementations of constructive heuristics for the PDP.
 '''
 
-from models import PDPInstance, Point, Solution
+from models import PDPInstance, Solution
 
 def greedy_construction(instance: PDPInstance) -> Solution:
     '''
@@ -12,7 +12,7 @@ def greedy_construction(instance: PDPInstance) -> Solution:
     Returns a list of the p chosen points.
     '''
     # copy all the instance's points
-    candidates = instance.points
+    candidates = list(instance.points)
     # initialize the solution with the 2 farthest points
     solution = list(instance.get_farthest_points())
     # remove them from the candidates
