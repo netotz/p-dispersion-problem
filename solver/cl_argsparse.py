@@ -44,13 +44,13 @@ def parse_arguments() -> Tuple[int, int, Tuple[int, int], int]:
         nargs=2,
         metavar=('constructive', 'localsearch'),
         type=int,
-        choices=(0, 1),
+        choices=(0, 1, 2),
         help='''heuristics to use,
         the solution given by the constructive will be sent to the local search.
         
-        Constructives: 1 = Greedy construction.
+        Constructives: 1 = Greedy construction (GC)
         
-        Local search: 1 = First pairwise interchange.
+        Local search: 1 = First pairwise interchange (IF), 2 = Best pairwase interchange (IM)
         
         If the constructive option is 0, the local search will receive a random solution'''
     )
