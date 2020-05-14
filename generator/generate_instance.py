@@ -23,5 +23,10 @@ def generate_instance(n: int, p: int, dimensions: Tuple[int, int], number: int):
     '''
     x_max, y_max = dimensions
     for _ in range(number):
+        print('Generating instance... ', end='', flush=True)
         instance = PDPInstance.random(n, p, x_max, y_max)
+        print('done.')
+
+        print('Writing instance to file... ', end='', flush=True)
         write_instance(instance)
+        print('done.\n')
