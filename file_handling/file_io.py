@@ -4,6 +4,7 @@ Module for writing and reading instances to and from files.
 
 import os
 import csv
+from typing import List
 
 from models import PDPInstance, Point
 from .path import generate_filename, get_filepath
@@ -57,7 +58,7 @@ def read_instance(filename: str) -> PDPInstance:
         print('   File %s has invalid format.' % filename)
         return None
 
-def write_results(filename: str, data):
+def write_results(filename: str, data: List[List[str]]):
     '''
     Writes a CSV file containing the results of an experiment.
     '''
