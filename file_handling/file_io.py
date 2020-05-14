@@ -3,6 +3,7 @@ Module for writing and reading instances to and from files.
 '''
 
 import os
+import csv
 
 from models import PDPInstance, Point
 from .path import generate_filename, get_filepath
@@ -55,3 +56,20 @@ def read_instance(filename: str) -> PDPInstance:
     except ValueError:
         print('   File %s has invalid format.' % filename)
         return None
+
+def write_results(filename: str, data):
+    '''
+    Writes a CSV file containing the results of an experiment.
+    '''
+    folder = get_filepath('', 'results')
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+
+    filepath = get_filepath(filename, 'results')
+    try:
+        with open(filepath, 'w', newline='') as file:
+            writer = csv.writer(file)
+            for row in data:
+                writer.writerow(row)
+    except (IOError, OSError) as error:
+        print('The results could not be written:\n', error)

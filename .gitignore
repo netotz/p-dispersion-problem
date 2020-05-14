@@ -1,6 +1,9 @@
 # Generated instance
 *.dat
 
+# Experimental results
+*.csv
+
 # PyLint file
 .pylintrc
 

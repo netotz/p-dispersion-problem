@@ -12,14 +12,14 @@ def generate_filename(n: int, p: int, index: int = 0) -> str:
 
     <n>_<p>_<index>.dat
     '''
-    return str(n) + '_' + str(p) + '_' + str(index) + '.dat'
+    return str(n) + '_' + str(p) + '_' + f'{index:02d}' + '.dat'
 
-def get_filepath(filename: str) -> str:
+def get_filepath(filename: str, folder: str = 'instances') -> str:
     '''
     Returns the path of a file based on it's name.
     '''
     current_dir = os.path.dirname(__file__)
-    filepath = os.path.join(current_dir, '..', 'instances', filename)
+    filepath = os.path.join(current_dir, '..', folder, filename)
     return os.path.abspath(filepath)
 
 def list_files(size: int, number: int) -> List[str]:
