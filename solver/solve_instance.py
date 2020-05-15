@@ -11,6 +11,7 @@ from file_handling import list_files, read_instance, write_results
 from heuristic.constructive import greedy_construction
 from heuristic.local_search import first_interchange, best_interchange
 from heuristic.functions import objective_function
+from models.plotter import plot_instance_solution
 
 def solve_instance(size: int, number: int, heuristics: Tuple[int, int], verbose: int):
     '''
@@ -43,6 +44,11 @@ def solve_instance(size: int, number: int, heuristics: Tuple[int, int], verbose:
         2: 'IM'
     }
 
+    # get chosen constructive heuristic
+    ch_key = heuristics[0]
+    # get chosen local search heuristic
+    lsh_key = heuristics[1]
+
     improved_instances = 0
     improvement_data = list()
     # initialize results with titles
@@ -55,8 +61,6 @@ def solve_instance(size: int, number: int, heuristics: Tuple[int, int], verbose:
         instance = read_instance(filename)
 
         print()
-        # get chosen constructive heuristic
-        ch_key = heuristics[0]
         if ch_key:
             start = timeit.default_timer()
             solution = ch_funcs[ch_key](instance)
@@ -72,8 +76,6 @@ def solve_instance(size: int, number: int, heuristics: Tuple[int, int], verbose:
             ch_of = ''
             ch_time = ''
 
-        # get chosen local search heuristic
-        lsh_key = heuristics[1]
         start = timeit.default_timer()
         solution = lsh_funcs[lsh_key](instance, solution)
         lsh_time = timeit.default_timer() - start
@@ -100,6 +102,8 @@ def solve_instance(size: int, number: int, heuristics: Tuple[int, int], verbose:
         # row (results' data) of current experiment with instance name
         results.append([filename[:-4], ch_of, ch_time, lsh_of, lsh_time, abs_imp, rel_imp])
 
+        plot_instance_solution(instance.points, solution)
+
     if ch_key:
         print(f'Improved instances: {improved_instances}/{number}')
         avg_rel_imp = f'{mean(improvement_data):.3g}%'
@@ -108,4 +112,3 @@ def solve_instance(size: int, number: int, heuristics: Tuple[int, int], verbose:
         results.append(['Average', '', '', '', '', '', avg_rel_imp])
     csv_name = f'{size}_{ch_names[ch_key]}_vs_{lsh_names[lsh_key]}.csv'
     write_results(csv_name, results)
-    # print(results)

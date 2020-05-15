@@ -5,6 +5,7 @@ Module to generate an instance for the PDP.
 from typing import Tuple
 
 from models import PDPInstance
+from models.plotter import plot_instance
 from file_handling import write_instance
 
 def generate_instance(n: int, p: int, dimensions: Tuple[int, int], number: int):
@@ -30,3 +31,5 @@ def generate_instance(n: int, p: int, dimensions: Tuple[int, int], number: int):
         print('Writing instance to file... ', end='', flush=True)
         write_instance(instance)
         print('done.\n')
+
+        plot_instance(instance.points)
