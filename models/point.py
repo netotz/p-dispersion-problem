@@ -58,4 +58,4 @@ class Point:
         return hash((self.index, self.x, self.y))
 
     def __repr__(self) -> str:
-        return f'Point({self.index}, {self.x}, {self.y})'
+        return f'Point(index={self.index}, x={self.x}, y={self.y})'
