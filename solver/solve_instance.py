@@ -11,9 +11,9 @@ from file_handling import list_files, read_instance, write_results
 from heuristic.constructive import greedy_construction
 from heuristic.local_search import first_interchange, best_interchange
 from heuristic.functions import objective_function
-from models.plotter import plot_instance_solution
+import models.plotter as mp
 
-def solve_instance(size: int, number: int, heuristics: Tuple[int, int], verbose: int):
+def solve_instance(size: int, number: int, heuristics: Tuple[int, int], verbose: int, save: bool, time: float):
     '''
     Solves one or more PDP instances according to:
 
@@ -24,8 +24,16 @@ def solve_instance(size: int, number: int, heuristics: Tuple[int, int], verbose:
     heuristics: Which heuristics to use. The first element is a constructive,
     the second a local search.
 
+    save: whether or not to save experimental results in a CSV file.
+
     verbose: Option to increase output information.
+
+    time: pause in seconds between plots.
     '''
+    files = list_files(size, number)
+    if not files:
+        return
+
     # constructive heuristics
     ch_funcs = {
         1: greedy_construction
@@ -44,6 +52,8 @@ def solve_instance(size: int, number: int, heuristics: Tuple[int, int], verbose:
         2: 'IM'
     }
 
+    bool_verbose = verbose == 3
+    mp.timeplot = time
     # get chosen constructive heuristic
     ch_key = heuristics[0]
     # get chosen local search heuristic
@@ -56,14 +66,14 @@ def solve_instance(size: int, number: int, heuristics: Tuple[int, int], verbose:
         ['Instance', 'CH OF', 'CH Time (s)', 'LSH OF', 'LSH Time (s)',
          'Absolute improvement', 'Relative improvement']
     ]
-    for filename in list_files(size, number):
+    for filename in files:
         # load instance from file
         instance = read_instance(filename)
 
         print()
         if ch_key:
             start = timeit.default_timer()
-            solution = ch_funcs[ch_key](instance)
+            solution = ch_funcs[ch_key](instance, bool_verbose)
             ch_time = timeit.default_timer() - start
 
             ch_of = objective_function(solution, instance.distances)
@@ -77,7 +87,7 @@ def solve_instance(size: int, number: int, heuristics: Tuple[int, int], verbose:
             ch_time = ''
 
         start = timeit.default_timer()
-        solution = lsh_funcs[lsh_key](instance, solution)
+        solution = lsh_funcs[lsh_key](instance, solution, bool_verbose)
         lsh_time = timeit.default_timer() - start
 
         lsh_of = objective_function(solution, instance.distances)
@@ -102,7 +112,8 @@ def solve_instance(size: int, number: int, heuristics: Tuple[int, int], verbose:
         # row (results' data) of current experiment with instance name
         results.append([filename[:-4], ch_of, ch_time, lsh_of, lsh_time, abs_imp, rel_imp])
 
-        plot_instance_solution(instance.points, solution)
+        if verbose >= 2:
+            mp.plot_instance_solution(instance.points, solution, True)
 
     if ch_key:
         print(f'Improved instances: {improved_instances}/{number}')
@@ -110,5 +121,8 @@ def solve_instance(size: int, number: int, heuristics: Tuple[int, int], verbose:
         print(f'Avg relative: {avg_rel_imp}')
         results.append(['Improved instances', '', '', '', '', improved_instances, ''])
         results.append(['Average', '', '', '', '', '', avg_rel_imp])
-    csv_name = f'{size}_{ch_names[ch_key]}_vs_{lsh_names[lsh_key]}.csv'
-    write_results(csv_name, results)
+
+    if save:
+        csv_name = f'{size}_{ch_names[ch_key]}_vs_{lsh_names[lsh_key]}.csv'
+        write_results(csv_name, results)
+        print(f'Experimental results have been saved to file {csv_name}.')
