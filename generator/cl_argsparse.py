@@ -10,7 +10,7 @@ import sys
 import argparse
 from typing import Tuple
 
-def parse_arguments() -> Tuple[int, int, Tuple[int, int], int]:
+def parse_arguments() -> Tuple[int, int, Tuple[int, int], int, int]:
     '''
     An ArgumentParser object receives arguments from the command line
     and returns them in a tuple of 4 elements.
@@ -62,11 +62,21 @@ def parse_arguments() -> Tuple[int, int, Tuple[int, int], int]:
 
     # optional arguments
     optional.add_argument(
-        '-i', '--instances',
+        '-n', '--number',
         metavar='n',
         type=int,
         default=1,
         help='number of instances to generate, default to 1'
+    )
+    optional.add_argument(
+        '-v', '--verbose',
+        type=int,
+        default=0,
+        choices=(0, 1, 2),
+        help='''increase output verbosity:
+            0 = no output (default).
+            1 = outputs instance generation and writing.
+            2 = same as 1 and shows a plot.'''
     )
     # append optional arguments to parser to display at the end
     parser._action_groups.append(optional)
@@ -89,4 +99,4 @@ def parse_arguments() -> Tuple[int, int, Tuple[int, int], int]:
     p = int(arguments.p * arguments.n)
 
     # return parsed arguments gathered in a tuple
-    return (arguments.n, p, dimensions, arguments.instances)
+    return (arguments.n, p, dimensions, arguments.number, arguments.verbose)
