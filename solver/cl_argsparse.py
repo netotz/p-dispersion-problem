@@ -10,7 +10,7 @@ import sys
 import argparse
 from typing import Tuple
 
-def parse_arguments() -> Tuple[int, int, Tuple[int, int], int]:
+def parse_arguments() -> Tuple[int, int, Tuple[int, int], int, int, int]:
     '''
     An ArgumentParser object receives arguments from the command line
     and solves a PDP instance and returns a tuple of 4 elements:
@@ -48,35 +48,50 @@ def parse_arguments() -> Tuple[int, int, Tuple[int, int], int]:
         help='''heuristics to use,
         the solution given by the constructive will be sent to the local search.
         
-        Constructives: 1 = Greedy construction (GC)
+        Constructives: 1 = Greedy construction (GC).
         
-        Local search: 1 = First pairwise interchange (IF), 2 = Best pairwase interchange (IM)
+        Local search: 1 = First pairwise interchange (IF), 2 = Best pairwase interchange (IM).
         
         If the constructive option is 0, the local search will receive a random solution'''
     )
 
     # required exclusive arguments
     # only one argument needs to be specified
-    number = required.add_mutually_exclusive_group()
-    number.add_argument(
-        '-i', '--instances',
+    instances = required.add_mutually_exclusive_group()
+    instances.add_argument(
+        '-n', '--number',
         metavar='n',
         type=int,
         help='number of instances to solve, default to 1 if not specified'
     )
-    number.add_argument(
+    instances.add_argument(
         '-a', '--all',
         action='store_true',
         help='solve all instances of the specified size'
     )
 
-    # optional arguments
+    optional.add_argument(
+        '-sr', '--save-results',
+        action='store_true',
+        help='save experimental results in a CSV file, default to False'
+    )
+    optional.add_argument(
+        '-t', '--time',
+        metavar='s',
+        type=float,
+        default=0,
+        help='''pause in seconds between plots,
+            default to 0 meaning that a click or key press is needed to replot'''
+    )
     optional.add_argument(
         '-v', '--verbose',
         type=int,
-        default=1,
+        default=0,
         choices=(1, 2, 3),
-        help='increase output verbosity'
+        help='''increase output verbosity:
+            1 = output heuristics results (default).
+            2 = show plot of the final solution.
+            3 = output each step of heuristics and show a plot every time the solution changes.'''
     )
     # append optional arguments to parser to display at the end
     parser._action_groups.append(optional)
@@ -91,10 +106,17 @@ def parse_arguments() -> Tuple[int, int, Tuple[int, int], int]:
 
     # if all instances will be solved
     if arguments.all:
-        instances = 20
-    elif arguments.instances:
-        instances = arguments.instances
+        number = 20
+    elif arguments.number:
+        number = arguments.number
     else:
-        instances = 1
+        number = 1
 
-    return (arguments.size, instances, tuple(arguments.heuristics), arguments.verbose)
+    return (
+        arguments.size,
+        number,
+        tuple(arguments.heuristics),
+        arguments.verbose,
+        arguments.save_results,
+        arguments.time
+    )
