@@ -48,8 +48,9 @@ def solve_instance(size: int, number: int, heuristics: Tuple[int, int], verbose:
         2: best_interchange
     }
     lsh_names = {
-        1: 'IF',
-        2: 'IM'
+        0: '',
+        1: '_vs_IF',
+        2: '_vs_IM'
     }
 
     bool_verbose = verbose == 3
@@ -86,17 +87,21 @@ def solve_instance(size: int, number: int, heuristics: Tuple[int, int], verbose:
             ch_of = ''
             ch_time = ''
 
-        start = timeit.default_timer()
-        solution = lsh_funcs[lsh_key](instance, solution, bool_verbose)
-        lsh_time = timeit.default_timer() - start
+        if lsh_key:
+            start = timeit.default_timer()
+            solution = lsh_funcs[lsh_key](instance, solution, bool_verbose)
+            lsh_time = timeit.default_timer() - start
 
-        lsh_of = objective_function(solution, instance.distances)
-        print(f'LSH OF = {lsh_of}')
-        lsh_time = float(f'{lsh_time:g}')
-        print(f'LSH Time = {lsh_time} s')
+            lsh_of = objective_function(solution, instance.distances)
+            print(f'LSH OF = {lsh_of}')
+            lsh_time = float(f'{lsh_time:g}')
+            print(f'LSH Time = {lsh_time} s')
+        else:
+            lsh_of = ''
+            lsh_time = ''
 
         # if the current experiment uses a CH and a LSH
-        if ch_key:
+        if ch_key and lsh_key:
             abs_imp = lsh_of - ch_of
             rel_imp = (abs_imp / ch_of) * 100
             improvement_data.append(rel_imp)
@@ -115,7 +120,7 @@ def solve_instance(size: int, number: int, heuristics: Tuple[int, int], verbose:
         if verbose >= 2:
             mp.plot_instance_solution(instance.points, solution, True)
 
-    if ch_key:
+    if ch_key and lsh_key:
         print(f'Improved instances: {improved_instances}/{number}')
         avg_rel_imp = f'{mean(improvement_data):.3g}%'
         print(f'Avg relative: {avg_rel_imp}')
@@ -123,6 +128,6 @@ def solve_instance(size: int, number: int, heuristics: Tuple[int, int], verbose:
         results.append(['Average', '', '', '', '', '', avg_rel_imp])
 
     if save:
-        csv_name = f'{size}_{ch_names[ch_key]}_vs_{lsh_names[lsh_key]}.csv'
+        csv_name = f'{size}_{ch_names[ch_key]}{lsh_names[lsh_key]}.csv'
         write_results(csv_name, results)
         print(f'Experimental results have been saved to file {csv_name}.')
