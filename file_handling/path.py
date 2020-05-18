@@ -44,9 +44,11 @@ def list_files(size: int, number: int) -> List[str]:
         ]
 
         if not filtered_files:
-            print(f' Error: There are no instances of size {size}.')
+            print(f' error: there are no instances of size {size}')
             return []
         elif len(filtered_files) == number:
             return filtered_files
-        else:
+        elif len(filtered_files) > number:
             return random.sample(filtered_files, number)
+        else:
+            print(f'  error: there are only {len(filtered_files)} files, not {number}')

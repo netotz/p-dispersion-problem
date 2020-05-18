@@ -10,6 +10,8 @@ import sys
 import argparse
 from typing import Tuple
 
+from validations import is_valid_n, is_positive_int, is_time
+
 def parse_arguments() -> Tuple[int, int, Tuple[int, int], int, int, int]:
     '''
     An ArgumentParser object receives arguments from the command line
@@ -34,9 +36,8 @@ def parse_arguments() -> Tuple[int, int, Tuple[int, int], int, int, int]:
     # both 'n' and 'p' must be specified
     required = parser.add_argument_group('requiered arguments')
     required.add_argument(
-        'size',
-        metavar='n',
-        type=int,
+        'n',
+        type=is_valid_n,
         help='size of the instance, the n points'
     )
     required.add_argument(
@@ -60,14 +61,13 @@ def parse_arguments() -> Tuple[int, int, Tuple[int, int], int, int, int]:
     instances = required.add_mutually_exclusive_group()
     instances.add_argument(
         '-n', '--number',
-        metavar='n',
-        type=int,
+        type=is_positive_int,
         help='number of instances to solve, default to 1 if not specified'
     )
     instances.add_argument(
         '-a', '--all',
         action='store_true',
-        help='solve all instances of the specified size'
+        help='solve the 20 instances of the specified size'
     )
 
     optional.add_argument(
@@ -78,7 +78,7 @@ def parse_arguments() -> Tuple[int, int, Tuple[int, int], int, int, int]:
     optional.add_argument(
         '-t', '--time',
         metavar='s',
-        type=float,
+        type=is_time,
         default=0,
         help='''pause in seconds between plots,
             default to 0 meaning that a click or key press is needed to replot'''
@@ -113,7 +113,7 @@ def parse_arguments() -> Tuple[int, int, Tuple[int, int], int, int, int]:
         number = 1
 
     return (
-        arguments.size,
+        arguments.n,
         number,
         tuple(arguments.heuristics),
         arguments.verbose,

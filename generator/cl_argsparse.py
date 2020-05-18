@@ -10,6 +10,8 @@ import sys
 import argparse
 from typing import Tuple
 
+from validations import is_valid_n, is_percentage, is_positive_int, are_valid_dimensions, is_valid_p
+
 def parse_arguments() -> Tuple[int, int, Tuple[int, int], int, int]:
     '''
     An ArgumentParser object receives arguments from the command line
@@ -34,12 +36,12 @@ def parse_arguments() -> Tuple[int, int, Tuple[int, int], int, int]:
     required = parser.add_argument_group('requiered arguments')
     required.add_argument(
         'n',
-        type=int,
+        type=is_valid_n,
         help='total number of candidate points'
     )
     required.add_argument(
         'p',
-        type=float,
+        type=is_percentage,
         help='percentage of points to select'
     )
 
@@ -49,22 +51,21 @@ def parse_arguments() -> Tuple[int, int, Tuple[int, int], int, int]:
     shape.add_argument(
         '-s', '--square',
         metavar='length',
-        type=int,
+        type=is_positive_int,
         help='locate the n points in a squared plane of dimensions length * length at most'
     )
     shape.add_argument(
         '-r', '--rectangle',
         metavar=('length', 'width'),
         nargs=2,
-        type=int,
+        type=is_positive_int,
         help='locate the n points in a rectangular plane of dimensions length * width at most'
     )
 
     # optional arguments
     optional.add_argument(
         '-n', '--number',
-        metavar='n',
-        type=int,
+        type=is_positive_int,
         default=1,
         help='number of instances to generate, default to 1'
     )
@@ -95,8 +96,18 @@ def parse_arguments() -> Tuple[int, int, Tuple[int, int], int, int]:
     # if chosen shape is rectangular
     else:
         dimensions = tuple(arguments.rectangle)
+    n = arguments.n
+    percentage = arguments.p
+    p = int(percentage * n)
 
-    p = int(arguments.p * arguments.n)
-
-    # return parsed arguments gathered in a tuple
-    return (arguments.n, p, dimensions, arguments.number, arguments.verbose)
+    # validate dimensions and p
+    msg = '  error: invalid'
+    if not are_valid_dimensions(n, dimensions):
+        print(f'{msg} dimensions: x*y must be greater or equal to n')
+        sys.exit(1)
+    elif not is_valid_p(p):
+        print(f'{msg} p value: must be 2 or greater')
+        sys.exit(1)
+    else:
+        # return parsed arguments gathered in a tuple
+        return (arguments.n, p, dimensions, arguments.number, arguments.verbose)
