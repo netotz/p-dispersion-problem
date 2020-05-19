@@ -1,6 +1,14 @@
 # Instances
 
-This directory must contain only the generated instances.
+This directory contains three sizes of instances, each size with twenty samples.
+
+| Size   | *n*  | *p* |
+|--------|------|-----|
+| Small  | 100  | 10  |
+| Medium | 500  | 37  |
+| Large  | 1000 | 50  |
+
+These instances have their points generated within a range of (0 - 10000, 0 - 10000) corresponding to the coordinates (x, y).
 
 ## Files
 

@@ -1,5 +1,8 @@
-# Generated instance
-*.dat
+# Experimental results
+*.csv
+
+# PyLint file
+.pylintrc
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
